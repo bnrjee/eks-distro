@@ -4,9 +4,9 @@ DEVELOPMENT?=false
 AWS_ACCOUNT_ID?=$(shell aws sts get-caller-identity --query Account --output text)
 AWS_REGION?=us-west-2
 IMAGE_REPO?=$(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com
-BASE_IMAGE?=$(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/eks-distro/base:26f234d9da8bc4423bacb539caaece931808d28b
-KUBE_PROXY_BASE_IMAGE?=$(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/kubernetes/kube-proxy-base:v0.4.2-ea45689a0da457711b15fa1245338cd0b636ad4b
-GO_RUNNER_IMAGE?=$(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/kubernetes/go-runner:v0.4.2-ea45689a0da457711b15fa1245338cd0b636ad4b
+BASE_IMAGE?=$(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/eks-distro/base:2020-12-22-1608677418
+KUBE_PROXY_BASE_IMAGE?=$(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/kubernetes/kube-proxy-base:v0.4.2-01aa2e564cecb85f6e5221663f5f23828bc3d3d7
+GO_RUNNER_IMAGE?=$(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/kubernetes/go-runner:v0.4.2-01aa2e564cecb85f6e5221663f5f23828bc3d3d7
 ARTIFACT_BUCKET?=my-s3-bucket
 
 ifdef MAKECMDGOALS
