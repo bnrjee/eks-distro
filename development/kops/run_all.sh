@@ -14,5 +14,5 @@
 # limitations under the License.
 
 set -eo pipefail
-echo "Test e2e for kops scripts"
+echo "Test e2e for kops scripts. Create kops cluster"
 echo "This script will create a cluster, run tests and tear it down"
