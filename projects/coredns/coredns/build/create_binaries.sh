@@ -18,7 +18,7 @@ set -x
 set -o errexit
 set -o nounset
 set -o pipefail
-
+echo "GOPROXY=$GOPROXY"
 CLONE_URL="$1"
 REPO="$2"
 TAG="$3"
