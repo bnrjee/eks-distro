@@ -22,10 +22,11 @@ presubmit-cleanup = \
 	fi
 
 .PHONY: postsubmit-conformance
+postsubmit-conformance:
+	go vet cmd/main_postsubmit.go
+	go run cmd/main_postsubmit.go "release" ${RELEASE_BRANCH} ${RELEASE} ${DEVELOPMENT} ${AWS_REGION} ${AWS_ACCOUNT_ID} ${BASE_IMAGE} ${IMAGE_REPO} ${GO_RUNNER_IMAGE} ${KUBE_PROXY_BASE_IMAGE} ${IMAGE_TAG} $(ARTIFACT_BUCKET)
 	bash development/kops/run_all.sh
-	go vet main_postsubmit.go
-	go run main_postsubmit.go "release" ${RELEASE_BRANCH} ${RELEASE} ${DEVELOPMENT} ${AWS_REGION} ${AWS_ACCOUNT_ID} ${BASE_IMAGE} ${IMAGE_REPO} ${GO_RUNNER_IMAGE} ${BASE_IMAGE} ${IMAGE_TAG}
-	bash build/lib/create_final_dir.sh $(RELEASE_BRANCH) $(RELEASE) $(ARTIFACT_BUCKET)
+
 .PHONY: build
 build: makes
 	@echo 'Done' $(TARGET)
