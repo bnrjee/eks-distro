@@ -57,8 +57,8 @@ do
   fi
   REPO="$(cut -d '/' -f2 <<< ${project})"
   ARTIFACT_DIR=${DEST_DIR}/${REPO}/${GIT_TAG}
-  mkdir -p $ARTIFACT_DIR
-  cp -r $SOURCE_DIR/* $ARTIFACT_DIR
+  mkdir -p $ARTIFACT_DIR || true
+  cp -r $SOURCE_DIR/* $ARTIFACT_DIR || true
 done
 
-aws s3 sync $DEST_DIR s3://${ARTIFACT_BUCKET}/${DEST_DIR} --acl public-read
+aws s3 sync $DEST_DIR s3://${ARTIFACT_BUCKET}/${DEST_DIR} --acl public-read || true
