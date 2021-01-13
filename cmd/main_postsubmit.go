@@ -11,18 +11,15 @@ func runCommand(runMake bool, path string, target string, args string, releaseBr
 	if (runMake == true) {
 		output, err := exec.Command("make", "-C", path, target, args).Output()
 		if (err != nil) {
-			log.Fatalf("There was an error running make: %v", err)
-			log.Fatalf("Make output: %v", output)
+			log.Fatalf("There was an error running make: %v. Make output:\n%v", err, output)
 		}
 		output, err = exec.Command("bash", "release/lib/create_final_dir.sh", releaseBranch, release, artifactBucket).Output()
 		if (err != nil) {
-			log.Fatalf("There was an error running mv: %v", err)
-			log.Fatalf("Output of mv command: %v", output)
+			log.Fatalf("There was an error running the script: %v. Output:\n%v", err, output)
 		}
 		output, err = exec.Command("mv", path+"/_output/tar/*", "/logs/artifacts").Output()
 		if (err != nil) {
-			log.Fatalf("There was an error running mv: %v", err)
-			log.Fatalf("Output of mv command: %v", output)
+			log.Fatalf("There was an error running mv: %v. Output:\n%v", err, output)
 		}
 	}
 }
