@@ -57,8 +57,8 @@ func main() {
 			os.Args[2], os.Args[3], os.Args[4], os.Args[5], os.Args[6], os.Args[7], os.Args[8], os.Args[11])
 	kubeBuildArg := fmt.Sprintf("RELEASE_BRANCH=%s RELEASE=%s DEVELOPMENT=%s AWS_REGION=%s AWS_ACCOUNT_ID=%s GO_RUNNER_IMAGE=%s KUBE_PROXY_BASE_IMAGE=%s IMAGE_TAG=%s",
                         os.Args[2], os.Args[3], os.Args[4], os.Args[5], os.Args[6], os.Args[9], os.Args[10], os.Args[11])
-	runCommand(kubernetesChanged, "kubernetes/kubernetes", os.Args[1], kubeBuildArg, os.Args[2], os.Args[3], os.Args[12])
-	runCommand(coreDnsChanged, "coredns/coredns", os.Args[1], buildArg, os.Args[2], os.Args[3], os.Args[12])
-	runCommand(cniPluginsChanged, "containernetworking/plugins", os.Args[1], buildArg, os.Args[2], os.Args[3], os.Args[12])
-	runCommand(iamAuthChanged, "kubernetes-sigs/aws-iam-authenticator", os.Args[1], buildArg, os.Args[2], os.Args[3], os.Args[12])
+	runCommand(kubernetesChanged, "projects/kubernetes/kubernetes", os.Args[1], kubeBuildArg, os.Args[2], os.Args[3], os.Args[12])
+	runCommand(coreDnsChanged, "projects/coredns/coredns", os.Args[1], buildArg, os.Args[2], os.Args[3], os.Args[12])
+	runCommand(cniPluginsChanged, "projects/containernetworking/plugins", os.Args[1], buildArg, os.Args[2], os.Args[3], os.Args[12])
+	runCommand(iamAuthChanged, "projects/kubernetes-sigs/aws-iam-authenticator", os.Args[1], buildArg, os.Args[2], os.Args[3], os.Args[12])
 }
