@@ -77,9 +77,6 @@ func main() {
 		"DEVELOPMENT=" + os.Args[4], "AWS_REGION=" + os.Args[5],
 		"AWS_ACCOUNT_ID=" + os.Args[6], "GO_RUNNER_IMAGE=" + os.Args[9],
 		"KUBE_PROXY_BASE_IMAGE=" + os.Args[10], "IMAGE_TAG=" + os.Args[11]}
-	fmt.Println(buildArg)
-	fmt.Println(kubeBuildArg)
-	fmt.Println(os.Args)
 	runCommand(gitRoot, cniPluginsChanged, "containernetworking/plugins", os.Args[2], os.Args[3], os.Args[12], buildArg)
 	runCommand(gitRoot, iamAuthChanged, "kubernetes-sigs/aws-iam-authenticator", os.Args[2], os.Args[3], os.Args[12], buildArg)
 	runCommand(gitRoot, coreDnsChanged, "coredns/coredns", os.Args[2], os.Args[3], os.Args[12], buildArg)
