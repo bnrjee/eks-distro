@@ -7,24 +7,26 @@ import (
 	"os/exec"
 	"strings"
 )
-func runCommand(root string, runMake bool, path string, target string, args string, releaseBranch string, release string, artifactBucket string) {
-	if (runMake == true) {
-		command := exec.Command("make", "-C", root+"/projects/"+path, target, args)
+
+func runCommand(root string, runMake bool, path string, releaseBranch string, release string, artifactBucket string, args []string) {
+	if runMake == true {
+		args[1] = args[1] + path
+		command := exec.Command("make", args...)
 		output, err := command.CombinedOutput()
-		if (err != nil) {
+		if err != nil {
 			log.Fatalf("There was an error running make: %v. Make output:\n%v", err, string(output))
 		}
 		fmt.Printf("Output of the make command for %v:\n %v", path, string(output))
 		command = exec.Command("bash", root+"/release/lib/create_final_dir.sh", releaseBranch, release, artifactBucket, path)
 		output, err = command.CombinedOutput()
-		if (err != nil) {
+		if err != nil {
 			log.Fatalf("There was an error running the create_final_dir script: %v. Output:\n%v", err, string(output))
 		}
 		fmt.Printf("Output of the create_final_dir script for %v:\n %v", path, string(output))
-		mvCommand := "mv "+root+"/projects/"+path+"/_output/tar/*"+" /logs/artifacts"
-		command = exec.Command("/bin/bash", "-c", mvCommand)
+		mvCommand := []string{"-c", "mv", root + "/projects/" + path + "/_output/tar/*", "/logs/artifacts"}
+		command = exec.Command("/bin/bash", mvCommand...)
 		output, err = command.CombinedOutput()
-		if (err != nil) {
+		if err != nil {
 			log.Fatalf("There was an error running mv: %v. Output:\n%v", err, string(output))
 		}
 	}
@@ -36,10 +38,10 @@ func main() {
 		log.Fatalf("There was an error running the git command: %v", err)
 	}
 	gitRoot := strings.Fields(string(gitRootOutput))[0]
-	kubernetesChanged := false;
-	coreDnsChanged := false;
-	cniPluginsChanged := false;
-	iamAuthChanged := false;
+	kubernetesChanged := false
+	coreDnsChanged := false
+	cniPluginsChanged := false
+	iamAuthChanged := false
 	gitDiffCommand := []string{"git", "-C", gitRoot, "diff", "--name-only", "HEAD^", "HEAD"}
 	fmt.Println("\n", strings.Join(gitDiffCommand, " "))
 
@@ -52,25 +54,34 @@ func main() {
 		if strings.Contains(file, "coredns/coredns") {
 			coreDnsChanged = true
 		}
-                if strings.Contains(file, "containernetworking/plugins") {
-                        cniPluginsChanged = true
-                }
-                if strings.Contains(file, "kubernetes-sigs/aws-iam-authenticator") {
-                        iamAuthChanged = true
-                }
-		if (file == "Makefile") {
+		if strings.Contains(file, "containernetworking/plugins") {
+			cniPluginsChanged = true
+		}
+		if strings.Contains(file, "kubernetes-sigs/aws-iam-authenticator") {
+			iamAuthChanged = true
+		}
+		if file == "Makefile" {
 			kubernetesChanged = true
 			coreDnsChanged = true
 			cniPluginsChanged = true
 			iamAuthChanged = true
 		}
 	}
-	buildArg := fmt.Sprintf("RELEASE_BRANCH=%s RELEASE=%s DEVELOPMENT=%s AWS_REGION=%s AWS_ACCOUNT_ID=%s BASE_IMAGE=%s IMAGE_REPO=%s IMAGE_TAG=%s",
-			os.Args[2], os.Args[3], os.Args[4], os.Args[5], os.Args[6], os.Args[7], os.Args[8], os.Args[11])
-	kubeBuildArg := fmt.Sprintf("RELEASE_BRANCH=%s RELEASE=%s DEVELOPMENT=%s AWS_REGION=%s AWS_ACCOUNT_ID=%s GO_RUNNER_IMAGE=%s KUBE_PROXY_BASE_IMAGE=%s IMAGE_TAG=%s",
-                        os.Args[2], os.Args[3], os.Args[4], os.Args[5], os.Args[6], os.Args[9], os.Args[10], os.Args[11])
-	runCommand(gitRoot, kubernetesChanged, "kubernetes/kubernetes", os.Args[1], kubeBuildArg, os.Args[2], os.Args[3], os.Args[12])
-	runCommand(gitRoot, coreDnsChanged, "coredns/coredns", os.Args[1], buildArg, os.Args[2], os.Args[3], os.Args[12])
-	runCommand(gitRoot, cniPluginsChanged, "containernetworking/plugins", os.Args[1], buildArg, os.Args[2], os.Args[3], os.Args[12])
-	runCommand(gitRoot, iamAuthChanged, "kubernetes-sigs/aws-iam-authenticator", os.Args[1], buildArg, os.Args[2], os.Args[3], os.Args[12])
+	buildArg := []string{"-C", gitRoot + "/projects/", os.Args[1],
+		"RELEASE_BRANCH=" + os.Args[2], "RELEASE=" + os.Args[3],
+		"DEVELOPMENT=" + os.Args[4], "AWS_REGION=" + os.Args[5],
+		"AWS_ACCOUNT_ID=" + os.Args[6], "BASE_IMAGE=" + os.Args[7],
+		"IMAGE_REPO=" + os.Args[8], "IMAGE_TAG=" + os.Args[11]}
+	kubeBuildArg := []string{"-C", gitRoot + "/projects/", os.Args[1],
+		"RELEASE_BRANCH=" + os.Args[2], "RELEASE=" + os.Args[3],
+		"DEVELOPMENT=" + os.Args[4], "AWS_REGION=" + os.Args[5],
+		"AWS_ACCOUNT_ID=" + os.Args[6], "GO_RUNNER_IMAGE=" + os.Args[9],
+		"KUBE_PROXY_BASE_IMAGE=" + os.Args[10], "IMAGE_TAG=" + os.Args[11]}
+	fmt.Println(buildArg)
+	fmt.Println(kubeBuildArg)
+	fmt.Println(os.Args)
+	runCommand(gitRoot, cniPluginsChanged, "containernetworking/plugins", os.Args[2], os.Args[3], os.Args[12], buildArg)
+	runCommand(gitRoot, iamAuthChanged, "kubernetes-sigs/aws-iam-authenticator", os.Args[2], os.Args[3], os.Args[12], buildArg)
+	runCommand(gitRoot, coreDnsChanged, "coredns/coredns", os.Args[2], os.Args[3], os.Args[12], buildArg)
+	runCommand(gitRoot, kubernetesChanged, "kubernetes/kubernetes", os.Args[2], os.Args[3], os.Args[12], kubeBuildArg)
 }
