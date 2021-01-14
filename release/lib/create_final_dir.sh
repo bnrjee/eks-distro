@@ -50,6 +50,6 @@ fi
 REPO="$(cut -d '/' -f2 <<< ${PROJECT})"
 ARTIFACT_DIR=${DEST_DIR}/${REPO}/${GIT_TAG}
 mkdir -p $ARTIFACT_DIR || true
-cp -r $SOURCE_DIR/* $ARTIFACT_DIR || true
+cp -r $SOURCE_DIR/* $ARTIFACT_DIR
 
-aws s3 sync $DEST_DIR s3://${ARTIFACT_BUCKET}/${DEST_DIR} --acl public-read || true
+aws s3 sync $DEST_DIR s3://${ARTIFACT_BUCKET}/${DEST_DIR} --acl public-read
