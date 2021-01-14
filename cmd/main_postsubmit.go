@@ -52,6 +52,12 @@ func main() {
                 if strings.Contains(file, "kubernetes-sigs/aws-iam-authenticator") {
                         iamAuthChanged = true
                 }
+		if (file == "Makefile") {
+			kubernetesChanged = true
+			coreDnsChanged = true
+			cniPluginsChanged = true
+			iamAuthChanged = true
+		}
 	}
 	buildArg := fmt.Sprintf("RELEASE_BRANCH=%s RELEASE=%s DEVELOPMENT=%s AWS_REGION=%s AWS_ACCOUNT_ID=%s BASE_IMAGE=%s IMAGE_REPO=%s IMAGE_TAG=%s",
 			os.Args[2], os.Args[3], os.Args[4], os.Args[5], os.Args[6], os.Args[7], os.Args[8], os.Args[11])
