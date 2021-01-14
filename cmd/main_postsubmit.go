@@ -17,7 +17,7 @@ func runCommand(runMake bool, path string, target string, args string, releaseBr
 		if (err != nil) {
 			log.Fatalf("There was an error running the script: %v. Output:\n%v", err, string(output))
 		}
-		output, err = exec.Command("mv", path+"/_output/tar/*", "/logs/artifacts").Output()
+		output, err = exec.Command("mv", "projects/"+path+"/_output/tar/*", "/logs/artifacts").Output()
 		if (err != nil) {
 			log.Fatalf("There was an error running mv: %v. Output:\n%v", err, string(output))
 		}
