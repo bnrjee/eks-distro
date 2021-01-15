@@ -90,6 +90,6 @@ func main() {
 	runCommand(gitRoot, cniPluginsChanged, "containernetworking/plugins", os.Args[2], os.Args[3], os.Args[11], buildArg)
 	runCommand(gitRoot, iamAuthChanged, "kubernetes-sigs/aws-iam-authenticator", os.Args[2], os.Args[3], os.Args[11], buildArg)
 	runCommand(gitRoot, coreDnsChanged, "coredns/coredns", os.Args[2], os.Args[3], os.Args[11], buildArg)
-	runCommand(gitRoot, etcdChanged, "coredns/coredns", os.Args[2], os.Args[3], os.Args[11], buildArg)
+	runCommand(gitRoot, etcdChanged, "etcd-io/etcd", os.Args[2], os.Args[3], os.Args[11], buildArg)
 	runCommand(gitRoot, kubernetesChanged, "kubernetes/kubernetes", os.Args[2], os.Args[3], os.Args[11], kubeBuildArg)
 }

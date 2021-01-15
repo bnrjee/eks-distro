@@ -22,7 +22,6 @@ presubmit-cleanup = \
 
 .PHONY: postsubmit-conformance
 postsubmit-conformance:
-	# Test kops specific targets
 	go vet cmd/main_postsubmit.go
 	go run cmd/main_postsubmit.go "release" ${RELEASE_BRANCH} ${RELEASE} ${DEVELOPMENT} ${AWS_REGION} ${AWS_ACCOUNT_ID} ${BASE_IMAGE} ${IMAGE_REPO} ${GO_RUNNER_IMAGE} ${KUBE_PROXY_BASE_IMAGE} $(ARTIFACT_BUCKET)
 	bash development/kops/run_all.sh
