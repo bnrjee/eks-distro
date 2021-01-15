@@ -28,7 +28,7 @@ func runCommand(root string, runMake bool, path string, releaseBranch string, re
 			}
 			fmt.Printf("Output of the create_final_dir script for %v:\n %v", path, string(output))
 			if path == "kubernetes/kubernetes" {
-				command = exec.Command("/bin/bash", "-c", "mv " + root + "/projects/" + path + "/_output/" + releaseBranch + " /logs/artifacts")
+				command = exec.Command("/bin/bash", "-c", "mv " + root + "/projects/" + path + "/_output/" + releaseBranch + "/*" + " /logs/artifacts")
 			} else {
 				command = exec.Command("/bin/bash", "-c", "mv " + root + "/projects/" + path + "/_output/tar/*" + " /logs/artifacts")
 			}
