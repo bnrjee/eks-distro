@@ -3,7 +3,6 @@ RELEASE?="1"
 DEVELOPMENT?=false
 AWS_ACCOUNT_ID?=$(shell aws sts get-caller-identity --query Account --output text)
 AWS_REGION?=us-west-2
-IMAGE_TAG?='$(GIT_TAG)-$(PULL_BASE_SHA)'
 IMAGE_REPO?=$(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com
 BASE_IMAGE?=$(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/eks-distro/base:2021-01-12-1610418935
 KUBE_PROXY_BASE_IMAGE?=$(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/kubernetes/kube-proxy-base:v0.4.2-ea45689a0da457711b15fa1245338cd0b636ad4b
@@ -24,7 +23,7 @@ presubmit-cleanup = \
 .PHONY: postsubmit-conformance
 postsubmit-conformance:
 	go vet cmd/main_postsubmit.go
-	go run cmd/main_postsubmit.go "release" ${RELEASE_BRANCH} ${RELEASE} ${DEVELOPMENT} ${AWS_REGION} ${AWS_ACCOUNT_ID} ${BASE_IMAGE} ${IMAGE_REPO} ${GO_RUNNER_IMAGE} ${KUBE_PROXY_BASE_IMAGE} ${IMAGE_TAG} $(ARTIFACT_BUCKET)
+	go run cmd/main_postsubmit.go "release" ${RELEASE_BRANCH} ${RELEASE} ${DEVELOPMENT} ${AWS_REGION} ${AWS_ACCOUNT_ID} ${BASE_IMAGE} ${IMAGE_REPO} ${GO_RUNNER_IMAGE} ${KUBE_PROXY_BASE_IMAGE} $(ARTIFACT_BUCKET)
 	bash development/kops/run_all.sh
 
 .PHONY: build

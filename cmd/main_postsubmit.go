@@ -74,14 +74,14 @@ func main() {
 		"RELEASE_BRANCH=" + os.Args[2], "RELEASE=" + os.Args[3],
 		"DEVELOPMENT=" + os.Args[4], "AWS_REGION=" + os.Args[5],
 		"AWS_ACCOUNT_ID=" + os.Args[6], "BASE_IMAGE=" + os.Args[7],
-		"IMAGE_REPO=" + os.Args[8], "IMAGE_TAG=" + os.Args[11]}
+		"IMAGE_REPO=" + os.Args[8], "IMAGE_TAG='$(GIT_TAG)-$(PULL_BASE_SHA)'"}
 	kubeBuildArg := []string{"-C", gitRoot + "/projects/", os.Args[1],
 		"RELEASE_BRANCH=" + os.Args[2], "RELEASE=" + os.Args[3],
 		"DEVELOPMENT=" + os.Args[4], "AWS_REGION=" + os.Args[5],
 		"AWS_ACCOUNT_ID=" + os.Args[6], "GO_RUNNER_IMAGE=" + os.Args[9],
-		"KUBE_PROXY_BASE_IMAGE=" + os.Args[10], "IMAGE_TAG=" + os.Args[11]}
-	runCommand(gitRoot, cniPluginsChanged, "containernetworking/plugins", os.Args[2], os.Args[3], os.Args[12], buildArg)
-	runCommand(gitRoot, iamAuthChanged, "kubernetes-sigs/aws-iam-authenticator", os.Args[2], os.Args[3], os.Args[12], buildArg)
-	runCommand(gitRoot, coreDnsChanged, "coredns/coredns", os.Args[2], os.Args[3], os.Args[12], buildArg)
-	runCommand(gitRoot, kubernetesChanged, "kubernetes/kubernetes", os.Args[2], os.Args[3], os.Args[12], kubeBuildArg)
+		"KUBE_PROXY_BASE_IMAGE=" + os.Args[10], "IMAGE_TAG='$(GIT_TAG)-$(PULL_BASE_SHA)'"}
+	runCommand(gitRoot, cniPluginsChanged, "containernetworking/plugins", os.Args[2], os.Args[3], os.Args[11], buildArg)
+	runCommand(gitRoot, iamAuthChanged, "kubernetes-sigs/aws-iam-authenticator", os.Args[2], os.Args[3], os.Args[11], buildArg)
+	runCommand(gitRoot, coreDnsChanged, "coredns/coredns", os.Args[2], os.Args[3], os.Args[11], buildArg)
+	runCommand(gitRoot, kubernetesChanged, "kubernetes/kubernetes", os.Args[2], os.Args[3], os.Args[11], kubeBuildArg)
 }
