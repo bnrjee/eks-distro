@@ -20,18 +20,20 @@ func runCommand(root string, runMake bool, path string, releaseBranch string, re
 		fmt.Printf("Output of the make command for %v:\n %v", path, string(output))
 		// Remove the target name from the build args
 		args[1] = root + "/projects/"
-		command = exec.Command("bash", root+"/release/lib/create_final_dir.sh", releaseBranch, release, artifactBucket, path)
-		output, err = command.CombinedOutput()
-		if err != nil {
-			log.Fatalf("There was an error running the create_final_dir script: %v. Output:\n%v", err, string(output))
+		if path != "coredns/coredns" {
+			command = exec.Command("bash", root+"/release/lib/create_final_dir.sh", releaseBranch, release, artifactBucket, path)
+			output, err = command.CombinedOutput()
+			if err != nil {
+				log.Fatalf("There was an error running the create_final_dir script: %v. Output:\n%v", err, string(output))
+			}
+			fmt.Printf("Output of the create_final_dir script for %v:\n %v", path, string(output))
+			command = exec.Command("/bin/bash", "-c", "mv " + root + "/projects/" + path + "/_output/tar/*" + " /logs/artifacts")
+			output, err = command.CombinedOutput()
+			if err != nil {
+				log.Fatalf("There was an error running mv: %v. Output:\n%v", err, string(output))
+			}
+			fmt.Printf("Successfully moved artifacts to /logs/artifacts directory for %v.\n", path)
 		}
-		fmt.Printf("Output of the create_final_dir script for %v:\n %v", path, string(output))
-		command = exec.Command("/bin/bash", "-c", "mv " + root + "/projects/" + path + "/_output/tar/*" + " /logs/artifacts")
-		output, err = command.CombinedOutput()
-		if err != nil {
-			log.Fatalf("There was an error running mv: %v. Output:\n%v", err, string(output))
-		}
-		fmt.Printf("Successfully moved artifacts to /logs/artifacts directory for %v.\n", path)
 	}
 }
 
@@ -45,6 +47,7 @@ func main() {
 	coreDnsChanged := false
 	cniPluginsChanged := false
 	iamAuthChanged := false
+	etcdChanged := false
 	gitDiffCommand := []string{"git", "-C", gitRoot, "diff", "--name-only", "HEAD^", "HEAD"}
 	fmt.Println("\n", strings.Join(gitDiffCommand, " "))
 
@@ -63,11 +66,15 @@ func main() {
 		if strings.Contains(file, "kubernetes-sigs/aws-iam-authenticator") {
 			iamAuthChanged = true
 		}
+		if strings.Contains(file, "etcd-io/etcd") {
+			etcdChanged = true
+		}
 		if file == "Makefile" {
 			kubernetesChanged = true
 			coreDnsChanged = true
 			cniPluginsChanged = true
 			iamAuthChanged = true
+			etcdChanged = true
 		}
 	}
 	buildArg := []string{"-C", gitRoot + "/projects/", os.Args[1],
@@ -83,5 +90,6 @@ func main() {
 	runCommand(gitRoot, cniPluginsChanged, "containernetworking/plugins", os.Args[2], os.Args[3], os.Args[11], buildArg)
 	runCommand(gitRoot, iamAuthChanged, "kubernetes-sigs/aws-iam-authenticator", os.Args[2], os.Args[3], os.Args[11], buildArg)
 	runCommand(gitRoot, coreDnsChanged, "coredns/coredns", os.Args[2], os.Args[3], os.Args[11], buildArg)
+	runCommand(gitRoot, etcdChanged, "coredns/coredns", os.Args[2], os.Args[3], os.Args[11], buildArg)
 	runCommand(gitRoot, kubernetesChanged, "kubernetes/kubernetes", os.Args[2], os.Args[3], os.Args[11], kubeBuildArg)
 }
