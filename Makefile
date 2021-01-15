@@ -32,6 +32,12 @@ setup:
 build: makes
 	@echo 'Done' $(TARGET)
 
+.PHONY: postsubmit-conformance
+postsubmit-conformance:
+	go vet cmd/main_postsubmit.go
+	go run cmd/main_postsubmit.go "release" ${RELEASE_BRANCH} ${RELEASE} ${DEVELOPMENT} ${AWS_REGION} ${AWS_ACCOUNT_ID} ${BASE_IMAGE} ${IMAGE_REPO} ${GO_RUNNER_IMAGE} ${KUBE_PROXY_BASE_IMAGE} $(ARTIFACT_BUCKET)
+	bash development/kops/run_all.sh
+
 .PHONY: release
 release: makes
 	AWS_DEFAULT_PROFILE=$(RELEASE_AWS_PROFILE) bash release/lib/create_final_dir.sh $(RELEASE_BRANCH) $(RELEASE) $(ARTIFACT_BUCKET)
