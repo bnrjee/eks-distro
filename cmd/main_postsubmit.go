@@ -27,7 +27,11 @@ func runCommand(root string, runMake bool, path string, releaseBranch string, re
 				log.Fatalf("There was an error running the create_final_dir script: %v. Output:\n%v", err, string(output))
 			}
 			fmt.Printf("Output of the create_final_dir script for %v:\n %v", path, string(output))
-			command = exec.Command("/bin/bash", "-c", "mv " + root + "/projects/" + path + "/_output/tar/*" + " /logs/artifacts")
+			if path == "kubernetes/kubernetes" {
+				command = exec.Command("/bin/bash", "-c", "mv " + root + "/projects/" + path + "/_output/" + releaseBranch + " /logs/artifacts")
+			} else {
+				command = exec.Command("/bin/bash", "-c", "mv " + root + "/projects/" + path + "/_output/tar/*" + " /logs/artifacts")
+			}
 			output, err = command.CombinedOutput()
 			if err != nil {
 				log.Fatalf("There was an error running mv: %v. Output:\n%v", err, string(output))
