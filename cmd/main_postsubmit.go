@@ -5,40 +5,78 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 )
 
-func runCommand(root string, runMake bool, path string, releaseBranch string, release string, artifactBucket string, args []string) {
+type Command struct {
+	releaseBranch        string
+	gitRoot              string
+	release              string
+	artifactBucket       string
+	uploadToPublicBucket bool
+	args                 []string
+}
+
+func (cmd Command) run(runMake bool, uploadArtifacts bool, targetPath string) {
 	if runMake == true {
 		// Add a specific target
-		args[1] = args[1] + path
-		command := exec.Command("make", args...)
+		cmd.args[1] = cmd.args[1] + targetPath
+		command := exec.Command("make", cmd.args...)
 		output, err := command.CombinedOutput()
 		if err != nil {
 			log.Fatalf("There was an error running make: %v. Make output:\n%v", err, string(output))
 		}
-		fmt.Printf("Output of the make command for %v:\n %v", path, string(output))
+		fmt.Printf("Output of the make command for %v:\n %v", targetPath, string(output))
 		// Remove the target name from the build args
-		args[1] = root + "/projects/"
-		if path != "coredns/coredns" {
-			command = exec.Command("bash", root+"/release/lib/create_final_dir.sh", releaseBranch, release, artifactBucket, path)
-			output, err = command.CombinedOutput()
-			if err != nil {
-				log.Fatalf("There was an error running the create_final_dir script: %v. Output:\n%v", err, string(output))
+		cmd.args[1] = cmd.gitRoot + "/projects/"
+		if uploadArtifacts == true {
+			if cmd.uploadToPublicBucket == true {
+				command = exec.Command("/bin/bash", cmd.gitRoot+"/release/lib/create_final_dir.sh", cmd.releaseBranch, cmd.release, cmd.artifactBucket, targetPath)
+				output, err = command.CombinedOutput()
+				if err != nil {
+					log.Fatalf("There was an error running the create_final_dir script: %v. Output:\n%v", err, string(output))
+				}
+				fmt.Printf("Output of the create_final_dir script for %v:\n %v", targetPath, string(output))
 			}
-			fmt.Printf("Output of the create_final_dir script for %v:\n %v", path, string(output))
-			if path == "kubernetes/kubernetes" {
-				command = exec.Command("/bin/bash", "-c", "mv " + root + "/projects/" + path + "/_output/" + releaseBranch + "/*" + " /logs/artifacts")
+			if targetPath == "kubernetes/kubernetes" {
+				command = exec.Command("/bin/bash", "-c", fmt.Sprintf("mv %s/projects/%s/_output/%s/* /logs/artifacts", cmd.gitRoot, targetPath, cmd.releaseBranch))
 			} else {
-				command = exec.Command("/bin/bash", "-c", "mv " + root + "/projects/" + path + "/_output/tar/*" + " /logs/artifacts")
+				command = exec.Command("/bin/bash", "-c", fmt.Sprintf("mv %s/projects/%s/_output/tar/* /logs/artifacts", cmd.gitRoot, targetPath))
 			}
 			output, err = command.CombinedOutput()
 			if err != nil {
 				log.Fatalf("There was an error running mv: %v. Output:\n%v", err, string(output))
 			}
-			fmt.Printf("Successfully moved artifacts to /logs/artifacts directory for %v.\n", path)
+			fmt.Printf("Successfully moved artifacts to /logs/artifacts directory for %v.\n", targetPath)
 		}
 	}
+}
+
+func NewCommand() *Command {
+	cmd := new(Command)
+	cmd.releaseBranch = os.Args[2]
+	cmd.release = os.Args[3]
+	cmd.artifactBucket = os.Args[11]
+	cmd.uploadToPublicBucket, _ = strconv.ParseBool(os.Args[12])
+	gitRootOutput, err := exec.Command("git", "rev-parse", "--show-toplevel").Output()
+	if err != nil {
+		log.Fatalf("There was an error running the git command: %v", err)
+	}
+	gitRoot := strings.Fields(string(gitRootOutput))[0]
+	fmt.Println(gitRoot)
+	cmd.args = []string{"-C", gitRoot + "/projects/", os.Args[1],
+		"RELEASE_BRANCH=" + os.Args[2],
+		"RELEASE=" + os.Args[3],
+		"DEVELOPMENT=" + os.Args[4],
+		"AWS_REGION=" + os.Args[5],
+		"AWS_ACCOUNT_ID=" + os.Args[6],
+		"BASE_IMAGE=" + os.Args[7],
+		"IMAGE_REPO=" + os.Args[8],
+		"GO_RUNNER_IMAGE=" + os.Args[9],
+		"KUBE_PROXY_BASE_IMAGE=" + os.Args[10],
+		"IMAGE_TAG='$(GIT_TAG)-$(PULL_BASE_SHA)'"}
+	return cmd
 }
 
 func main() {
@@ -81,19 +119,11 @@ func main() {
 			etcdChanged = true
 		}
 	}
-	buildArg := []string{"-C", gitRoot + "/projects/", os.Args[1],
-		"RELEASE_BRANCH=" + os.Args[2], "RELEASE=" + os.Args[3],
-		"DEVELOPMENT=" + os.Args[4], "AWS_REGION=" + os.Args[5],
-		"AWS_ACCOUNT_ID=" + os.Args[6], "BASE_IMAGE=" + os.Args[7],
-		"IMAGE_REPO=" + os.Args[8], "IMAGE_TAG='$(GIT_TAG)-$(PULL_BASE_SHA)'"}
-	kubeBuildArg := []string{"-C", gitRoot + "/projects/", os.Args[1],
-		"RELEASE_BRANCH=" + os.Args[2], "RELEASE=" + os.Args[3],
-		"DEVELOPMENT=" + os.Args[4], "AWS_REGION=" + os.Args[5],
-		"AWS_ACCOUNT_ID=" + os.Args[6], "GO_RUNNER_IMAGE=" + os.Args[9],
-		"KUBE_PROXY_BASE_IMAGE=" + os.Args[10], "IMAGE_TAG='$(GIT_TAG)-$(PULL_BASE_SHA)'"}
-	runCommand(gitRoot, cniPluginsChanged, "containernetworking/plugins", os.Args[2], os.Args[3], os.Args[11], buildArg)
-	runCommand(gitRoot, iamAuthChanged, "kubernetes-sigs/aws-iam-authenticator", os.Args[2], os.Args[3], os.Args[11], buildArg)
-	runCommand(gitRoot, coreDnsChanged, "coredns/coredns", os.Args[2], os.Args[3], os.Args[11], buildArg)
-	runCommand(gitRoot, etcdChanged, "etcd-io/etcd", os.Args[2], os.Args[3], os.Args[11], buildArg)
-	runCommand(gitRoot, kubernetesChanged, "kubernetes/kubernetes", os.Args[2], os.Args[3], os.Args[11], kubeBuildArg)
+
+	cmd := NewCommand()
+	cmd.run(cniPluginsChanged, true, "containernetworking/plugins")
+	cmd.run(iamAuthChanged, true, "kubernetes-sigs/aws-iam-authenticator")
+	cmd.run(coreDnsChanged, false, "coredns/coredns")
+	cmd.run(etcdChanged, true, "etcd-io/etcd")
+	cmd.run(kubernetesChanged, true, "kubernetes/kubernetes")
 }
