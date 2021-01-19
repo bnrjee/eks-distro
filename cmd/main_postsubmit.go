@@ -63,9 +63,8 @@ func NewCommand() *Command {
 	if err != nil {
 		log.Fatalf("There was an error running the git command: %v", err)
 	}
-	gitRoot := strings.Fields(string(gitRootOutput))[0]
-	fmt.Println(gitRoot)
-	cmd.args = []string{"-C", gitRoot + "/projects/", os.Args[1],
+	cmd.gitRoot = strings.Fields(string(gitRootOutput))[0]
+	cmd.args = []string{"-C", cmd.gitRoot + "/projects/", os.Args[1],
 		"RELEASE_BRANCH=" + os.Args[2],
 		"RELEASE=" + os.Args[3],
 		"DEVELOPMENT=" + os.Args[4],
