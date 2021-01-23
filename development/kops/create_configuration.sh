@@ -24,7 +24,6 @@ if [ -z "$AWS_DEFAULT_REGION" ]; then
     export AWS_DEFAULT_REGION=${REGION:-us-west-2}
 fi
 export AWS_REGION="${AWS_DEFAULT_REGION}"
-aws sts get-caller-identity --query Account --output text
 if ! aws sts get-caller-identity --query Account --output text >/dev/null 2>/dev/null
 then
     echo "Error authtenticating with AWS running: aws sts get-caller-identity"
