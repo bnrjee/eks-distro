@@ -22,7 +22,9 @@ if [ "$TEST_ROLE_ARN" == "" ]; then
     echo "Empty AWS_ROLE_ARN, this script must be run in a postsubmit pod with IAM Roles for Service Accounts"
     exit 1
 fi
-
+echo "AWS_ROLE_ARN=$AWS_ROLE_ARN"
+echo "TEST_ROLE_ARN=$TEST_ROLE_ARN"
+echo "KOPS_CLUSTER_NAME=$KOPS_CLUSTER_NAME"
 BASEDIR=$(dirname "$0")
 
 cat << EOF > ${BASEDIR}/config
