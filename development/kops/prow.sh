@@ -27,7 +27,7 @@ echo "TEST_ROLE_ARN=$TEST_ROLE_ARN"
 echo "KOPS_CLUSTER_NAME=$KOPS_CLUSTER_NAME"
 BASEDIR=$(dirname "$0")
 
-cat << EOF > ${BASEDIR}/config
+cat << EOF > config
 [default]
 output=json
 region=${AWS_REGION:-${AWS_DEFAULT_REGION:-us-west-2}}
@@ -39,7 +39,7 @@ role_arn=$TEST_ROLE_ARN
 region=${AWS_REGION:-${AWS_DEFAULT_REGION:-us-west-2}}
 source_profile=default
 EOF
-
-export AWS_CONFIG_FILE=${BASEDIR}/config
+cat config
+export AWS_CONFIG_FILE=$(pwd)/config
 export AWS_DEFAULT_PROFILE=conformance-test
 ${BASEDIR}/run_all.sh
