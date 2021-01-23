@@ -42,5 +42,6 @@ EOF
 
 export AWS_CONFIG_FILE=${BASEDIR}/config
 export AWS_DEFAULT_PROFILE=conformance-test
-
+cat $AWS_CONFIG_FILE
+sleep 600
 ${BASEDIR}/run_all.sh

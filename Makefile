@@ -4,7 +4,7 @@ export DEVELOPMENT?=false
 export AWS_ACCOUNT_ID?=$(shell aws sts get-caller-identity --query Account --output text)
 export AWS_REGION?=us-west-2
 export IMAGE_REPO?=$(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com
-export KOPS_CLUSTER_NAME=$(cat /dev/urandom | LC_ALL=C tr -dc '[:alpha:]' | tr '[:upper:]' '[:lower:]' | head -c 32).bnrjee.people.aws.dev
+export KOPS_CLUSTER_NAME=$(shell cat /dev/urandom | LC_ALL=C tr -dc '[:alpha:]' | tr '[:upper:]' '[:lower:]' | head -c 32).bnrjee.people.aws.dev
 export TEST_ROLE_ARN=arn:aws:iam::$(AWS_ACCOUNT_ID):role/$(TEST_ROLE_NAME)
 BASE_IMAGE_TAG?=$(shell cat EKS_DISTRO_BASE_TAG_FILE)
 export BASE_IMAGE?=$(IMAGE_REPO)/eks-distro/base:$(BASE_IMAGE_TAG)
