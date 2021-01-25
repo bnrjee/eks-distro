@@ -85,7 +85,7 @@ kops toolbox template --template eks-d.tpl --values ./${KOPS_CLUSTER_NAME}/value
 #export AWS_DEFAULT_PROFILE=conformance-test
 #export AWS_PROFILE=conformance-test
 echo "Creating cluster configuration"
-kops create -f "./${KOPS_CLUSTER_NAME}/${KOPS_CLUSTER_NAME}.yaml"
+kops create -f "./${KOPS_CLUSTER_NAME}/${KOPS_CLUSTER_NAME}.yaml" -v=9
 
 echo "Creating cluster ssh key"
 export SSH_KEY_PATH=${SSH_KEY_PATH:-$HOME/.ssh/id_rsa.pub}
