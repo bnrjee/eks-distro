@@ -76,15 +76,14 @@ EOF
 
 echo "Creating ${KOPS_CLUSTER_NAME}.yaml"
 kops toolbox template --template eks-d.tpl --values ./${KOPS_CLUSTER_NAME}/values.yaml > "./${KOPS_CLUSTER_NAME}/${KOPS_CLUSTER_NAME}.yaml"
-test_role_arn=$TEST_ROLE_ARN
-export AWS_DEFAULT_PROFILE=default
-export AWS_PROFILE=default
-assume_test_role_output=`aws sts assume-role --role-arn $test_role_arn --role-session-name test-role-session`
-export AWS_ACCESS_KEY_ID=`echo $assume_test_role_output|jq .Credentials.AccessKeyId`
-export AWS_SECRET_ACCESS_KEY=`echo $assume_test_role_output|jq .Credentials.SecretAccessKey`
-export AWS_SESSION_TOKEN=`echo $assume_test_role_output|jq .Credentials.SessionToken`
-export AWS_DEFAULT_PROFILE=conformance-test
-export AWS_PROFILE=conformance-test
+#export AWS_DEFAULT_PROFILE=default
+#export AWS_PROFILE=default
+#assume_test_role_output=`aws sts assume-role --role-arn $TEST_ROLE_ARN --role-session-name test-role-session`
+#export AWS_ACCESS_KEY_ID=`echo $assume_test_role_output|jq .Credentials.AccessKeyId`
+#export AWS_SECRET_ACCESS_KEY=`echo $assume_test_role_output|jq .Credentials.SecretAccessKey`
+#export AWS_SESSION_TOKEN=`echo $assume_test_role_output|jq .Credentials.SessionToken`
+#export AWS_DEFAULT_PROFILE=conformance-test
+#export AWS_PROFILE=conformance-test
 echo "Creating cluster configuration"
 kops create -f "./${KOPS_CLUSTER_NAME}/${KOPS_CLUSTER_NAME}.yaml"
 
