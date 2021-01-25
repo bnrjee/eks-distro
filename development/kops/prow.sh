@@ -41,5 +41,6 @@ source_profile=default
 EOF
 cat config
 export AWS_CONFIG_FILE=$(pwd)/config
-export AWS_DEFAULT_PROFILE=conformance-test
+export AWS_DEFAULT_PROFILE=default
+export AWS_PROFILE=conformance-test
 ${BASEDIR}/run_all.sh
