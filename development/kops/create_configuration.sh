@@ -76,7 +76,7 @@ EOF
 
 echo "Creating ${KOPS_CLUSTER_NAME}.yaml"
 kops toolbox template --template eks-d.tpl --values ./${KOPS_CLUSTER_NAME}/values.yaml > "./${KOPS_CLUSTER_NAME}/${KOPS_CLUSTER_NAME}.yaml"
-test_role_arn=`aws sts get-caller-identity| jq .Arn`
+test_role_arn=$TEST_ROLE_ARN
 export AWS_DEFAULT_PROFILE=default
 export AWS_PROFILE=default
 assume_test_role_output=`aws sts assume-role --role-arn $test_role_arn --role-session-name test-role-session`
