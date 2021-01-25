@@ -83,6 +83,9 @@ export AWS_SECRET_ACCESS_KEY=`echo $assume_test_role_output|jq -r .Credentials.S
 export AWS_SESSION_TOKEN=`echo $assume_test_role_output|jq -r .Credentials.SessionToken`
 #export AWS_DEFAULT_PROFILE=conformance-test
 #export AWS_PROFILE=conformance-test
+unset AWS_DEFAULT_PROFILE
+unset AWS_PROFILE
+unset AWS_SDK_LOAD_CONFIG
 aws sts get-caller-identity
 echo "Creating cluster configuration"
 kops create -f "./${KOPS_CLUSTER_NAME}/${KOPS_CLUSTER_NAME}.yaml" -v=9
