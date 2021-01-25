@@ -39,6 +39,7 @@ role_arn=$TEST_ROLE_ARN
 region=${AWS_REGION:-${AWS_DEFAULT_REGION:-us-west-2}}
 source_profile=default
 EOF
+#Test
 export AWS_CONFIG_FILE=$(pwd)/config
 export AWS_DEFAULT_PROFILE=conformance-test
 export AWS_PROFILE=conformance-test
