@@ -24,8 +24,6 @@ if [ -z "$AWS_DEFAULT_REGION" ]; then
     export AWS_DEFAULT_REGION=${REGION:-us-west-2}
 fi
 export AWS_REGION="${AWS_DEFAULT_REGION}"
-echo "Print the caller identity"
-aws sts get-caller-identity
 if ! aws sts get-caller-identity --query Account --output text >/dev/null 2>/dev/null
 then
     echo "Error authtenticating with AWS running: aws sts get-caller-identity"
@@ -78,7 +76,7 @@ EOF
 
 echo "Creating ${KOPS_CLUSTER_NAME}.yaml"
 kops toolbox template --template eks-d.tpl --values ./${KOPS_CLUSTER_NAME}/values.yaml > "./${KOPS_CLUSTER_NAME}/${KOPS_CLUSTER_NAME}.yaml"
-
+aws ec2 describe-availability-zones
 echo "Creating cluster configuration"
 kops create -f "./${KOPS_CLUSTER_NAME}/${KOPS_CLUSTER_NAME}.yaml"
 
