@@ -78,21 +78,22 @@ echo "Creating ${KOPS_CLUSTER_NAME}.yaml"
 kops toolbox template --template eks-d.tpl --values ./${KOPS_CLUSTER_NAME}/values.yaml > "./${KOPS_CLUSTER_NAME}/${KOPS_CLUSTER_NAME}.yaml"
 export AWS_DEFAULT_PROFILE=default
 export AWS_PROFILE=default
-assume_test_role_output=`aws sts assume-role --role-arn $TEST_ROLE_ARN --role-session-name test-role-session`
 export AWS_ACCESS_KEY_ID=`echo $assume_test_role_output|jq -r .Credentials.AccessKeyId`
 export AWS_SECRET_ACCESS_KEY=`echo $assume_test_role_output|jq -r .Credentials.SecretAccessKey`
 export AWS_SESSION_TOKEN=`echo $assume_test_role_output|jq -r .Credentials.SessionToken`
 #export AWS_DEFAULT_PROFILE=conformance-test
 #export AWS_PROFILE=conformance-test
-unset AWS_DEFAULT_PROFILE
-unset AWS_PROFILE
-unset AWS_SDK_LOAD_CONFIG
 aws sts get-caller-identity
 echo "Creating cluster configuration"
 kops create -f "./${KOPS_CLUSTER_NAME}/${KOPS_CLUSTER_NAME}.yaml" -v=9
 
 echo "Creating cluster ssh key"
-export SSH_KEY_PATH=${SSH_KEY_PATH:-$HOME/.ssh/id_rsa.pub}
+SSH_FILE=${SSH_KEY_PATH:-$HOME/.ssh/id_rsa.pub}
+if [ ! -f "$SSH_FILE" ]
+then
+  ssh-keygen -t rsa -b 4096 -f "$SSH_FILE"
+fi
+export SSH_KEY_PATH="$SSH_FILE"
 kops create secret --name $KOPS_CLUSTER_NAME sshpublickey admin -i ${SSH_KEY_PATH}
 
 echo
