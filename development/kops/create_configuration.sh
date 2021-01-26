@@ -82,8 +82,6 @@ assume_test_role_output=`aws sts assume-role --role-arn $TEST_ROLE_ARN --role-se
 export AWS_ACCESS_KEY_ID=`echo $assume_test_role_output|jq -r .Credentials.AccessKeyId`
 export AWS_SECRET_ACCESS_KEY=`echo $assume_test_role_output|jq -r .Credentials.SecretAccessKey`
 export AWS_SESSION_TOKEN=`echo $assume_test_role_output|jq -r .Credentials.SessionToken`
-#export AWS_DEFAULT_PROFILE=conformance-test
-#export AWS_PROFILE=conformance-test
 unset AWS_DEFAULT_PROFILE
 unset AWS_PROFILE
 unset AWS_SDK_LOAD_CONFIG
@@ -99,10 +97,12 @@ then
 fi
 export SSH_KEY_PATH="$SSH_FILE"
 kops create secret --name $KOPS_CLUSTER_NAME sshpublickey admin -i "${SSH_KEY_PATH}.pub"
-
+aws s3 ls
 export AWS_DEFAULT_PROFILE=conformance-test
 export AWS_PROFILE=conformance-test
-
+export AWS_SDK_LOAD_CONFIG="true"
+aws sts get-caller-identity
+aws s3 ls
 echo
 echo "# Creating ./${KOPS_CLUSTER_NAME}/env.sh"
 echo "export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION" | tee ./${KOPS_CLUSTER_NAME}/env.sh
