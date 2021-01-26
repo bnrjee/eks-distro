@@ -75,6 +75,7 @@ data:
 EOF
 
 echo "Creating ${KOPS_CLUSTER_NAME}.yaml"
+env
 kops toolbox template --template eks-d.tpl --values ./${KOPS_CLUSTER_NAME}/values.yaml > "./${KOPS_CLUSTER_NAME}/${KOPS_CLUSTER_NAME}.yaml"
 echo "Creating cluster configuration"
 kops create -f "./${KOPS_CLUSTER_NAME}/${KOPS_CLUSTER_NAME}.yaml" -v=9
@@ -87,12 +88,6 @@ then
 fi
 export SSH_KEY_PATH="$SSH_FILE"
 kops create secret --name $KOPS_CLUSTER_NAME sshpublickey admin -i "${SSH_KEY_PATH}.pub"
-aws s3 ls
-export AWS_DEFAULT_PROFILE=conformance-test
-export AWS_PROFILE=conformance-test
-export AWS_SDK_LOAD_CONFIG="true"
-aws sts get-caller-identity
-aws s3 ls
 echo
 echo "# Creating ./${KOPS_CLUSTER_NAME}/env.sh"
 echo "export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION" | tee ./${KOPS_CLUSTER_NAME}/env.sh
