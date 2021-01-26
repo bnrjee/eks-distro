@@ -27,6 +27,7 @@ source ./auth.sh
 ./set_nodeport_access.sh
 ./cluster_wait.sh
 ./run_sonobuoy.sh
+source ./auth.sh
 ./delete_cluster.sh
 ./delete_store.sh
 cd $PRESENT_PATH

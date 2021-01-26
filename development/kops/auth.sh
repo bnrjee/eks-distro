@@ -1,6 +1,9 @@
+unset AWS_ACCESS_KEY_ID
+unset AWS_SECRET_ACCESS_KEY
+unset AWS_SESSION_TOKEN
 export AWS_DEFAULT_PROFILE=default
 export AWS_PROFILE=default
-assume_test_role_output=`aws sts assume-role --role-arn $TEST_ROLE_ARN --role-session-name test-role-session --duration-seconds 7200`
+assume_test_role_output=`aws sts assume-role --role-arn $TEST_ROLE_ARN --role-session-name test-role-session`
 export AWS_ACCESS_KEY_ID=`echo $assume_test_role_output|jq -r .Credentials.AccessKeyId`
 export AWS_SECRET_ACCESS_KEY=`echo $assume_test_role_output|jq -r .Credentials.SecretAccessKey`
 export AWS_SESSION_TOKEN=`echo $assume_test_role_output|jq -r .Credentials.SessionToken`
