@@ -7,3 +7,4 @@ export AWS_SESSION_TOKEN=`echo $assume_test_role_output|jq -r .Credentials.Sessi
 unset AWS_DEFAULT_PROFILE
 unset AWS_PROFILE
 unset AWS_SDK_LOAD_CONFIG
+aws sts get-caller-identity

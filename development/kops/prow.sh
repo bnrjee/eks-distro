@@ -44,4 +44,5 @@ export AWS_CONFIG_FILE=$(pwd)/config
 export AWS_DEFAULT_PROFILE=conformance-test
 export AWS_PROFILE=conformance-test
 #Test
+source ./auth.sh
 ${BASEDIR}/run_all.sh
