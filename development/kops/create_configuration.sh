@@ -100,6 +100,9 @@ fi
 export SSH_KEY_PATH="$SSH_FILE"
 kops create secret --name $KOPS_CLUSTER_NAME sshpublickey admin -i "${SSH_KEY_PATH}.pub"
 
+export AWS_DEFAULT_PROFILE=conformance-test
+export AWS_PROFILE=conformance-test
+
 echo
 echo "# Creating ./${KOPS_CLUSTER_NAME}/env.sh"
 echo "export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION" | tee ./${KOPS_CLUSTER_NAME}/env.sh
