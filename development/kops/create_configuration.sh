@@ -76,7 +76,8 @@ EOF
 
 echo "Creating ${KOPS_CLUSTER_NAME}.yaml"
 export AWS_SDK_LOAD_CONFIG=1
-env
+env|grep AWS
+cat $AWS_CONFIG_FILE
 kops toolbox template --template eks-d.tpl --values ./${KOPS_CLUSTER_NAME}/values.yaml > "./${KOPS_CLUSTER_NAME}/${KOPS_CLUSTER_NAME}.yaml"
 echo "Creating cluster configuration"
 kops create -f "./${KOPS_CLUSTER_NAME}/${KOPS_CLUSTER_NAME}.yaml" -v=9

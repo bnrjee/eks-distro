@@ -8,4 +8,6 @@
 #unset AWS_PROFILE
 #unset AWS_SDK_LOAD_CONFIG
 export AWS_SDK_LOAD_CONFIG=1
+env|grep AWS
+cat $AWS_CONFIG_FILE
 aws sts get-caller-identity
