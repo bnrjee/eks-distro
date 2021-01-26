@@ -20,6 +20,7 @@ PRESENT_PATH=`pwd`
 echo "This script will create a cluster, run tests and tear it down"
 cd "$PATH_TO_SCRIPT"
 source ./create_store_name.sh
+source ./auth.sh
 ./install.sh
 ./create_configuration.sh
 ./create_cluster.sh
