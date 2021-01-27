@@ -157,6 +157,9 @@ func main() {
 		"kubernetes/kubernetes": {
 			uploadArtifacts: true,
 		},
+		"kubernetes/release": {
+			uploadArtifacts: false,
+		},
 		"coredns/coredns": {
 			uploadArtifacts: false,
 		},
@@ -166,8 +169,29 @@ func main() {
 		"kubernetes-sigs/aws-iam-authenticator": {
 			uploadArtifacts: true,
 		},
+		"kubernetes-sigs/metrics-server": {
+			uploadArtifacts: false,
+		},
 		"etcd-io/etcd": {
 			uploadArtifacts: true,
+		},
+		"kubernetes-csi/external-attacher": {
+			uploadArtifacts: false,
+		},
+		"kubernetes-csi/external-resizer": {
+			uploadArtifacts: false,
+		},
+		"kubernetes-csi/livenessprobe": {
+			uploadArtifacts: false,
+		},
+		"kubernetes-csi/node-driver-registrar": {
+			uploadArtifacts: false,
+		},
+		"kubernetes-csi/external-snapshotter": {
+			uploadArtifacts: false,
+		},
+		"kubernetes-csi/external-provisioner": {
+			uploadArtifacts: false,
 		},
 	}
 
