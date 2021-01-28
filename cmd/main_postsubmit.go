@@ -72,12 +72,12 @@ func (c *Command) buildProject(projectPath string, uploadArtifacts bool) error {
 			cmd = exec.Command(
 				"/bin/bash",
 				"-c",
-				fmt.Sprintf("'mv %s/projects/%s/_output/%s/* /logs/artifacts'", c.gitRoot, projectPath, c.releaseBranch))
+				fmt.Sprintf("mv %s/projects/%s/_output/%s/* /logs/artifacts", c.gitRoot, projectPath, c.releaseBranch))
 		} else {
 			cmd = exec.Command(
 				"/bin/bash",
 				"-c",
-				fmt.Sprintf("'mv %s/projects/%s/_output/tar/* /logs/artifacts'", c.gitRoot, projectPath))
+				fmt.Sprintf("mv %s/projects/%s/_output/tar/* /logs/artifacts", c.gitRoot, projectPath))
 		}
 		cmd.Stdout = outputStream
 		cmd.Stderr = errStream
