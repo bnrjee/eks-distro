@@ -34,6 +34,7 @@ build: makes
 
 .PHONY: postsubmit-conformance
 postsubmit-conformance:
+	@echo 'entry point:' $(ENTRYPOINT_OPTIONS)
 	go vet cmd/main_postsubmit.go
 	go run cmd/main_postsubmit.go \
 		--target=release \
