@@ -13,7 +13,6 @@ export KUBE_PROXY_BASE_IMAGE?=$(IMAGE_REPO)/kubernetes/kube-proxy-base:$(KUBE_BA
 export GO_RUNNER_IMAGE?=$(IMAGE_REPO)/kubernetes/go-runner:$(KUBE_BASE_TAG)
 ARTIFACT_BUCKET?=artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2
 RELEASE_AWS_PROFILE?=default
-#Test
 ifdef MAKECMDGOALS
 TARGET=$(MAKECMDGOALS)
 else
