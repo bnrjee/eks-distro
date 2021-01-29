@@ -1,7 +1,6 @@
 REPO?=plugins
 CLONE_URL?=https://github.com/containernetworking/$(REPO).git
 GIT_TAG?=$(shell cat GIT_TAG)
-#Test
 ifeq ("$(REPO)","")
 	$(error No repository name was provided.)
 endif
