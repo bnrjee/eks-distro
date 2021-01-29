@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -exo pipefail
+set -eo pipefail
 PATH_TO_SCRIPT=$(dirname "$0")
 PRESENT_PATH=`pwd`
 
