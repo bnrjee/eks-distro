@@ -13,18 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -exo pipefail
+set -eo pipefail
 PATH_TO_SCRIPT=$(dirname "$0")
 PRESENT_PATH=`pwd`
 
 echo "This script will create a cluster, run tests and tear it down"
 cd "$PATH_TO_SCRIPT"
 source ./create_store_name.sh
+if [[ $USE_AWS_CREDS == "true" ]]
+then
+source ./auth.sh
+fi
+./install.sh
 ./create_configuration.sh
 ./create_cluster.sh
 ./set_nodeport_access.sh
 ./cluster_wait.sh
 ./run_sonobuoy.sh
+if [[ $USE_AWS_CREDS == "true" ]]
+then
+source ./auth.sh
+fi
 ./delete_cluster.sh
 ./delete_store.sh
 cd $PRESENT_PATH
