@@ -1,7 +1,7 @@
 ## EKS Distro Repository
 
 [![Build status](https://prow.eks.amazonaws.com/badge.svg?jobs=[!*tooling-postsubmit]*-postsubmit)](https://prow.eks.amazonaws.com/?repo=aws%2Feks-distro&type=postsubmit)
-
+[![Build status](https://localhost:8080/badge.svg?jobs=main-*-postsubmit)](https://prow.eks.amazonaws.com/?job=main-*-postsubmit)
 Amazon **EKS Distro** (EKS-D) is a Kubernetes distribution based on and used by
 Amazon Elastic Kubernetes Service (EKS) to create reliable and secure Kubernetes
 clusters. With EKS-D, you can rely on the same versions of Kubernetes and its
