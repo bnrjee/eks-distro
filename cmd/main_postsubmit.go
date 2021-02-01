@@ -202,7 +202,7 @@ func main() {
 			}
 		}
 		if file == "Makefile" {
-			allChanged = true
+			allChanged = false
 		}
 	}
 	for projectPath, config := range projects {
