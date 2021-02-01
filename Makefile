@@ -5,13 +5,12 @@ export AWS_ACCOUNT_ID?=$(shell aws sts get-caller-identity --query Account --out
 export AWS_REGION?=us-west-2
 export IMAGE_REPO?=$(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com
 export KOPS_CLUSTER_NAME=$(shell cat /dev/urandom | LC_ALL=C tr -dc '[:alpha:]' | tr '[:upper:]' '[:lower:]' | head -c 32).prod.test.pdx.kops-ci.model-rocket.aws.dev
-export TEST_ROLE_ARN=arn:aws:iam::$(AWS_ACCOUNT_ID):role/$(TEST_ROLE_NAME)
 BASE_IMAGE_TAG?=$(shell cat EKS_DISTRO_BASE_TAG_FILE)
 export BASE_IMAGE?=$(IMAGE_REPO)/eks-distro/base:$(BASE_IMAGE_TAG)
-KUBE_BASE_TAG?=v0.4.2-ea45689a0da457711b15fa1245338cd0b636ad4b
+KUBE_BASE_TAG?=v0.4.2-01aa2e564cecb85f6e5221663f5f23828bc3d3d7
 export KUBE_PROXY_BASE_IMAGE?=$(IMAGE_REPO)/kubernetes/kube-proxy-base:$(KUBE_BASE_TAG)
 export GO_RUNNER_IMAGE?=$(IMAGE_REPO)/kubernetes/go-runner:$(KUBE_BASE_TAG)
-ARTIFACT_BUCKET?=artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2
+export ARTIFACT_BUCKET?=my-s3-bucket
 RELEASE_AWS_PROFILE?=default
 
 ifdef MAKECMDGOALS
