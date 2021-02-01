@@ -1,5 +1,5 @@
 🟩 [View the live docs](https://distro.eks.amazonaws.com)
-
+[![Build status](https://prow.eks.amazonaws.com/badge.svg?jobs=docs-postsubmit)](https://prow.eks.amazonaws.com/?job=docs-postsubmit)
 # Writing and publishing docs
 
 Our docs are written in [MkDocs](https://www.mkdocs.org/) using the [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) theme.
