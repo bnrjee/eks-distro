@@ -14,5 +14,5 @@
 # limitations under the License.
 
 # Create a unique s3 bucket name
-export KOPS_STATE_STORE="s3://kops-state-store-$PROW_JOB_ID"
+export KOPS_STATE_STORE="s3://prow-data-devstack-kopsbucket430c8c85-14zoiyq5lra24"
 echo export KOPS_STATE_STORE="${KOPS_STATE_STORE}"
