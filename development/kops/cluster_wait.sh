@@ -33,3 +33,6 @@ done
 
 set -x
 kops validate cluster --wait 6m
+echo "Get all instance group"
+kops get ig --name ${CLUSTER_NAME}
+echo "got all instance group"
