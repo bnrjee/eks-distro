@@ -17,14 +17,17 @@ set -eo pipefail
 
 BASEDIR=$(dirname "$0")
 source ${BASEDIR}/set_k8s_versions.sh
-{
-  read -r; while read -r line; do echo 
-    ig_name=`$line|awk '{print $1;}'`
-    kops get ig --name ${KOPS_CLUSTER_NAME} $ig_name -o yaml > existing_config.yaml
-    sed '/spec:/ a \ \ iam:\n \ \ \ profile: arn:aws:iam::051478615782:instance-profile/test-build-devstack-kopsInstanceProfile-G4D5MX8W6YMF' existing_config.yaml > new_config.yaml
-    kops replace -f new_config.yaml --state s3://prow-data-devstack-kopsbucket430c8c85-14zoiyq5lra24 --name ${KOPS_CLUSTER_NAME}
-  done;
-} < <(kops get ig --name ${KOPS_CLUSTER_NAME}) 
 
+kops get ig --name ${KOPS_CLUSTER_NAME} --state ${KOPS_STATE_STORE}| \
+{ \
+  read -r; while read -r line; \
+  do \
+    ig_name=`echo $line|awk '{print $1;}'`; \
+    kops get ig --name ${KOPS_CLUSTER_NAME} $ig_name --state ${KOPS_STATE_STORE} -o yaml > existing_config.yaml; \
+    sed '/spec:/ a \ \ iam:\n \ \ \ profile: arn:aws:iam::051478615782:instance-profile/test-build-devstack-kopsInstanceProfile-G4D5MX8W6YMF' existing_config.yaml > new_config.yaml; \
+    cat new_config.yaml; \
+    kops replace -f new_config.yaml --state --state ${KOPS_STATE_STORE} --name ${KOPS_CLUSTER_NAME};\
+  done; \
+}
 kops update cluster --name ${KOPS_CLUSTER_NAME} --yes --lifecycle-overrides IAMRole=ExistsAndWarnIfChanges,IAMRolePolicy=ExistsAndWarnIfChanges,IAMInstanceProfileRole=ExistsAndWarnIfChanges
 kops rolling-update cluster ${KOPS_CLUSTER_NAME} --yes
