@@ -32,7 +32,6 @@ do
 done
 
 set -x
+#kops validate cluster --wait 6m
+kops rolling-update cluster --name ${KOPS_CLUSTER_NAME} --yes --fail-on-validate-error="false" --master-interval=8m --node-interval=8m
 kops validate cluster --wait 6m
-echo "Get all instance group"
-kops get ig --name ${KOPS_CLUSTER_NAME}
-echo "got all instance group"
