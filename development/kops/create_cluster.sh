@@ -26,8 +26,8 @@ kops get ig --name ${KOPS_CLUSTER_NAME} --state ${KOPS_STATE_STORE}| \
     kops get ig --name ${KOPS_CLUSTER_NAME} $ig_name --state ${KOPS_STATE_STORE} -o yaml > existing_config.yaml; \
     sed '/spec:/ a \ \ iam:\n \ \ \ profile: arn:aws:iam::051478615782:instance-profile/test-build-devstack-kopsInstanceProfile-G4D5MX8W6YMF' existing_config.yaml > new_config.yaml; \
     cat new_config.yaml; \
-    kops replace -f new_config.yaml --state --state ${KOPS_STATE_STORE} --name ${KOPS_CLUSTER_NAME};\
+    #kops replace -f new_config.yaml --state --state ${KOPS_STATE_STORE} --name ${KOPS_CLUSTER_NAME};\
   done; \
 }
 kops update cluster --name ${KOPS_CLUSTER_NAME} --yes --lifecycle-overrides IAMRole=ExistsAndWarnIfChanges,IAMRolePolicy=ExistsAndWarnIfChanges,IAMInstanceProfileRole=ExistsAndWarnIfChanges
-kops rolling-update cluster ${KOPS_CLUSTER_NAME} --yes
+#kops rolling-update cluster ${KOPS_CLUSTER_NAME} --yes
