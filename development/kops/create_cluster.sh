@@ -28,11 +28,11 @@ kops get ig --name ${KOPS_CLUSTER_NAME} --state ${KOPS_STATE_STORE}| \
     if [[ ${ig_name} == "nodes" ]]; \
     then \
       instanc_profile="arn:aws:iam::051478615782:instance-profile/test-build-devstack-kopsNodesInstanceProfile-1UCR1AB6B0J3C"; \	    
-    fi \
+    fi; \
     sed '/spec:/ a \ \ iam:\n \ \ \ profile: ${instanc_profile}' existing_config.yaml > new_config.yaml; \
     cat new_config.yaml; \
     kops replace -f new_config.yaml --state ${KOPS_STATE_STORE} --name ${KOPS_CLUSTER_NAME};\
   done; \
 }
 kops update cluster --name ${KOPS_CLUSTER_NAME} --yes --lifecycle-overrides IAMRole=ExistsAndWarnIfChanges,IAMRolePolicy=ExistsAndWarnIfChanges,IAMInstanceProfileRole=ExistsAndWarnIfChanges
-#kops rolling-update cluster ${KOPS_CLUSTER_NAME} --yes
+kops rolling-update cluster ${KOPS_CLUSTER_NAME} --yes
