@@ -34,4 +34,3 @@ kops get ig --name ${KOPS_CLUSTER_NAME} --state ${KOPS_STATE_STORE}| \
   done; \
 }
 kops update cluster --name ${KOPS_CLUSTER_NAME} --yes --lifecycle-overrides IAMRole=ExistsAndWarnIfChanges,IAMRolePolicy=ExistsAndWarnIfChanges,IAMInstanceProfileRole=ExistsAndWarnIfChanges
-kops rolling-update cluster --name ${KOPS_CLUSTER_NAME} --yes
