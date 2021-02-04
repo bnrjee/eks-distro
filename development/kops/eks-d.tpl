@@ -28,7 +28,6 @@ spec:
   iam:
     allowContainerRegistry: true
     legacy: false
-    profile: arn:aws:iam::051478615782:instance-profile/test-build-devstack-kopsInstanceProfile-G4D5MX8W6YMF
   kubelet:
     anonymousAuth: false
   kubernetesApiAccess:
