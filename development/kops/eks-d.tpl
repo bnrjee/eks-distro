@@ -110,6 +110,8 @@ metadata:
     kops.k8s.io/cluster: {{.clusterName}}
   name: control-plane-{{.awsRegion}}a
 spec:
+  iam:
+    profile: arn:aws:iam::051478615782:instance-profile/test-build-devstack-kopsAdminInstanceProfile-OD5ZLBSY5K7B
   image: 099720109477/ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-20201026
   machineType: t3.medium
   maxSize: 1
@@ -130,6 +132,8 @@ metadata:
     kops.k8s.io/cluster: {{.clusterName}}
   name: nodes
 spec:
+  iam: 
+    profile: arn:aws:iam::051478615782:instance-profile/test-build-devstack-kopsNodesInstanceProfile-1UCR1AB6B0J3C
   image: 099720109477/ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-20201026
   machineType: t3.medium
   maxSize: 3
