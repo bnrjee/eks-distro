@@ -43,6 +43,6 @@ EOF
 export AWS_CONFIG_FILE=$(pwd)/config
 #export AWS_DEFAULT_PROFILE=conformance-test
 export AWS_PROFILE=conformance-test
-#export USE_AWS_CREDS="true"
+export REUSE_STATE_STORE="true"
 unset AWS_ROLE_ARN AWS_WEB_IDENTITY_TOKEN_FILE
 ${BASEDIR}/run_all.sh

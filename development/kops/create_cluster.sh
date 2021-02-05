@@ -33,5 +33,5 @@ kops get ig --name ${KOPS_CLUSTER_NAME} --state ${KOPS_STATE_STORE}| \
     kops replace -f new_config.yaml --state ${KOPS_STATE_STORE} --name ${KOPS_CLUSTER_NAME};\
   done; \
 }
-kops update cluster --name ${KOPS_CLUSTER_NAME} --state ${KOPS_STATE_STORE} --yes --lifecycle-overrides IAMRole=ExistsAndWarnIfChanges,IAMRolePolicy=ExistsAndWarnIfChanges,IAMInstanceProfileRole=ExistsAndWarnIfChanges
+kops update cluster --name ${KOPS_CLUSTER_NAME} --state ${KOPS_STATE_STORE} --yes --lifecycle-overrides IAMRole=Ignore,IAMRolePolicy=Ignore,IAMInstanceProfileRole=Ignore
 echo "Update done."
