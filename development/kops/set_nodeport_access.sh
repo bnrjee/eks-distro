@@ -20,4 +20,4 @@ set -exo pipefail
 #
 export KOPS_FEATURE_FLAGS=SpecOverrideFlag
 kops set cluster "${KOPS_CLUSTER_NAME}" 'cluster.spec.nodePortAccess=0.0.0.0/0'
-kops update cluster --name ${KOPS_CLUSTER_NAME} --state ${KOPS_STATE_STORE} --yes --lifecycle-overrides IAMRole=Ignore,IAMRolePolicy=Ignore,IAMInstanceProfileRole=Ignore
+kops update cluster --yes
