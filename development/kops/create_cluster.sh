@@ -17,5 +17,5 @@ set -exo pipefail
 
 BASEDIR=$(dirname "$0")
 source ${BASEDIR}/set_k8s_versions.sh
-kops update cluster --name ${KOPS_CLUSTER_NAME} --yes --lifecycle-overrides IAMRole=ExistsAndWarnIfChanges,IAMRolePolicy=ExistsAndWarnIfChanges,IAMInstanceProfileRole=ExistsAndWarnIfChanges
+kops update cluster --name ${KOPS_CLUSTER_NAME} --yes --lifecycle-overrides IAMRole=ExistsAndWarnIfChanges,IAMRolePolicy=ExistsAndWarnIfChanges,IAMInstanceProfileRole=ExistsAndWarnIfChanges -v 10
 echo "Update done."
