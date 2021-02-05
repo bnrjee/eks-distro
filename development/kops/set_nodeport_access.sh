@@ -13,12 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -eo pipefail
+set -exo pipefail
 
 #
 # NodePort setting
 #
 export KOPS_FEATURE_FLAGS=SpecOverrideFlag
 kops set cluster "${KOPS_CLUSTER_NAME}" 'cluster.spec.nodePortAccess=0.0.0.0/0'
-
-kops update cluster --yes
+kops update cluster --name ${KOPS_CLUSTER_NAME} --state ${KOPS_STATE_STORE} --yes --lifecycle-overrides IAMRole=Ignore,IAMRolePolicy=Ignore,IAMInstanceProfileRole=Ignore
