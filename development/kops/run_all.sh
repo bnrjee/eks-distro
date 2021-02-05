@@ -35,5 +35,8 @@ source ./create_store_name.sh
  # source ./auth.sh
 #fi
 ./delete_cluster.sh
-./delete_store.sh
+if [[ REUSE_STATE_STORE != "true" ]]
+then
+  ./delete_store.sh
+fi
 cd $PRESENT_PATH
