@@ -7,7 +7,7 @@ else
 	RELEASE?=$(DEFAULT_RELEASE)
 endif
 ARTIFACT_BUCKET?=my-s3-bucket
-export KOPS_CLUSTER_NAME=$(PROW_JOB_ID).bnrjee.people.aws.dev
+
 export CONTROL_PLANE_INSTANCE_PROFILE="arn:aws:iam::051478615782:instance-profile/test-build-devstack-kopsAdminInstanceProfile-1TA3BRARMERXS"
 export NODE_INSTANCE_PROFILE="arn:aws:iam::051478615782:instance-profile/test-build-devstack-kopsNodesInstanceProfile-187HUQP8APEJ7"
 DEVELOPMENT?=false
