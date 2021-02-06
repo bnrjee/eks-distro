@@ -61,7 +61,7 @@ then
 fi
 export PREFLIGHT_CHECK_PASSED
 
-VERSION=$(cat ${BASEDIR}/../../projects/kubernetes/kubernetes/${RELEASE_BRANCH}/GIT_TAG)
+VERSION=v1.18.9
 export DEFAULT_REPOSITORY_URI=public.ecr.aws/eks-distro
 export REPOSITORY_URI=${REPOSITORY_URI:-${DEFAULT_REPOSITORY_URI}}
 export CNI_VERSION_URL=https://distro.eks.amazonaws.com/kubernetes-${RELEASE_BRANCH}/releases/${RELEASE}/artifacts/plugins/v0.8.7/cni-plugins-linux-amd64-v0.8.7.tar.gz

@@ -17,7 +17,7 @@ function cleanup()
 {
   echo 'Deleting...'
   ./delete_cluster.sh || true
-  ./delete_store.sh
+  #./delete_store.sh
   exit 255;
 }
 
