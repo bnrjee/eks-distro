@@ -47,17 +47,6 @@ build:
 
 .PHONY: postsubmit-conformance
 postsubmit-conformance:
-	go vet cmd/main_postsubmit.go
-	go run cmd/main_postsubmit.go \
-		--target=release \
-		--release-branch=${RELEASE_BRANCH} \
-		--release=${RELEASE} \
-		--development=${DEVELOPMENT} \
-		--region=${AWS_REGION} \
-		--account-id=${AWS_ACCOUNT_ID} \
-		--image-repo=${IMAGE_REPO} \
-		--artifact-bucket=$(ARTIFACT_BUCKET) \
-		--dry-run=false
 	bash development/kops/prow.sh
 
 .PHONY: tag
