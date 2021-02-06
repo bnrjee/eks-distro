@@ -129,7 +129,7 @@ func main() {
 		}
 		r := regexp.MustCompile("Makefile|cmd/main_postsubmit.go|release/.*")
 		if r.MatchString(file) {
-			allChanged = true
+			allChanged = false
 		}
 	}
 	for _, projectPath := range buildOrder {
