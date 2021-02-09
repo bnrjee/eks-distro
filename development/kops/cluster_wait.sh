@@ -13,11 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -eo pipefail
+set -exo pipefail
 
 BASEDIR=$(dirname "$0")
 source ${BASEDIR}/set_environment.sh
 $PREFLIGHT_CHECK_PASSED || exit 1
+
+#kops rolling-update cluster --name ${KOPS_CLUSTER_NAME} --yes  --cloudonly --force -v 10
 
 #
 # Add IAM configmap
