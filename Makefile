@@ -8,8 +8,8 @@ else
 endif
 ARTIFACT_BUCKET?=my-s3-bucket
 
-export CONTROL_PLANE_INSTANCE_PROFILE="arn:aws:iam::051478615782:instance-profile/test-build-devstack-kopsAdminInstanceProfile-1TA3BRARMERXS"
-export NODE_INSTANCE_PROFILE="arn:aws:iam::051478615782:instance-profile/test-build-devstack-kopsNodesInstanceProfile-187HUQP8APEJ7"
+export CONTROL_PLANE_INSTANCE_PROFILE=arn:aws:iam::051478615782:instance-profile/test-build-devstack-kopsAdminInstanceProfile-1TA3BRARMERXS
+export NODE_INSTANCE_PROFILE=arn:aws:iam::051478615782:instance-profile/test-build-devstack-kopsNodesInstanceProfile-187HUQP8APEJ7
 DEVELOPMENT?=false
 AWS_ACCOUNT_ID?=$(shell aws sts get-caller-identity --query Account --output text)
 AWS_REGION?=us-west-2
