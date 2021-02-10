@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -eo pipefail
+set -exo pipefail
 
 BASEDIR=$(dirname "$0")
 source ${BASEDIR}/set_environment.sh
 $PREFLIGHT_CHECK_PASSED || exit 1
 
-${KOPS} update cluster --name ${KOPS_CLUSTER_NAME} --yes
+${KOPS} update cluster --name ${KOPS_CLUSTER_NAME} --yes -v 10
