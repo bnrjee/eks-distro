@@ -14,7 +14,8 @@
 # limitations under the License.
 
 set -eo pipefail
-
+export CONTROL_PLANE_INSTANCE_PROFILE=arn:aws:iam::051478615782:instance-profile/test-build-devstack-kopsAdminInstanceProfile-1TA3BRARMERXS
+export NODE_INSTANCE_PROFILE=arn:aws:iam::051478615782:instance-profile/test-build-devstack-kopsNodesInstanceProfile-187HUQP8APEJ7
 BASEDIR=$(dirname "$0")
 source ${BASEDIR}/set_environment.sh
 $PREFLIGHT_CHECK_PASSED || exit 1
