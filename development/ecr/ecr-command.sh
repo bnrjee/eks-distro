@@ -14,7 +14,7 @@
 # limitations under the License.
 
 BASEDIR=$(dirname "$0")
-
+cd ${BASEDIR}
 
 function install_ecr_public {
     if [ ! -f ~/.aws/models/ecr-public/2020-10-30/service-2.json ]
