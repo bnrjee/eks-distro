@@ -2,8 +2,10 @@ BASE_DIRECTORY=$(shell git rev-parse --show-toplevel)
 RELEASE_BRANCH?=1-18
 DEFAULT_RELEASE=$(shell cat $(BASE_DIRECTORY)/release/$(RELEASE_BRANCH)/RELEASE)
 RELEASE?=$(or $(BUILD_ID),$(DEFAULT_RELEASE))
-ARTIFACT_BUCKET?=my-s3-bucket
-
+export ARTIFACT_BUCKET=paris-artifact-stack-devs-artifactsbucket2aac5544-16hs3iutbyhdn
+export CONTROL_PLANE_INSTANCE_PROFILE=arn:aws:iam::051478615782:instance-profile/KopsControlPlaneBuildRole
+export NODE_INSTANCE_PROFILE=arn:aws:iam::051478615782:instance-profile/KopsNodesBuildRole
+export KOPS_STATE_STORE=test-build-devstack-kopsbuildstatestorebucketf8c8-1wub538iczf94
 DEVELOPMENT?=false
 AWS_ACCOUNT_ID?=$(shell aws sts get-caller-identity --query Account --output text)
 AWS_REGION?=us-west-2
@@ -43,16 +45,16 @@ build:
 .PHONY: postsubmit-conformance
 postsubmit-conformance:
 	go vet cmd/main_postsubmit.go
-	go run cmd/main_postsubmit.go \
-		--target=release \
-		--release-branch=${RELEASE_BRANCH} \
-		--release=${RELEASE} \
-		--development=${DEVELOPMENT} \
-		--region=${AWS_REGION} \
-		--account-id=${AWS_ACCOUNT_ID} \
-		--image-repo=${IMAGE_REPO} \
-		--artifact-bucket=$(ARTIFACT_BUCKET) \
-		--dry-run=false
+	#go run cmd/main_postsubmit.go \
+		#--target=release \
+		#--release-branch=${RELEASE_BRANCH} \
+		#--release=${RELEASE} \
+		#--development=${DEVELOPMENT} \
+		#--region=${AWS_REGION} \
+		#--account-id=${AWS_ACCOUNT_ID} \
+		#--image-repo=${IMAGE_REPO} \
+		#--artifact-bucket=$(ARTIFACT_BUCKET) \
+		#--dry-run=false
 #	bash development/kops/prow.sh
 
 .PHONY: tag
