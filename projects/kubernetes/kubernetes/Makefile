@@ -22,7 +22,7 @@ KUBE_PROXY_BASE_IMAGE?=$(BASE_REPO)/$(KUBE_PROXY_BASE_IMAGE_NAME):$(KUBE_BASE_TA
 # Since the image won't be available for the local-images target,
 # need to override based on an image that is already available.
 # We want to a better way than this to avoid having to change often.
-PRESUBMIT_KUBE_BASE_TAG?=v0.4.2-ea45689a0da457711b15fa1245338cd0b636ad4b
+PRESUBMIT_KUBE_BASE_TAG?=v0.4.2-eks-1-18-1361484479591354368
 PRESUBMIT_GO_RUNNER_IMAGE?=$(BASE_REPO)/$(GO_RUNNER_IMAGE_NAME):$(PRESUBMIT_KUBE_BASE_TAG)
 PRESUBMIT_KUBE_PROXY_BASE_IMAGE?=$(BASE_REPO)/$(KUBE_PROXY_BASE_IMAGE_NAME):$(PRESUBMIT_KUBE_BASE_TAG)
 
